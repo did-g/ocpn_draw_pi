@@ -137,6 +137,7 @@ SET(HDRS
 )
 
 SET(OCPNSRC 
+        ocpnsrc/TexFont.cpp
         ocpnsrc/bbox.cpp
         ocpnsrc/cutil.cpp
         ocpnsrc/geodesic.cpp
