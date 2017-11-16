@@ -64,6 +64,7 @@ extern int                  g_iTextPosition;
 extern int                  g_iBoundaryPointRangeRingLineWidth;
 extern int                  g_iBoundaryPointRangeRingLineStyle;
 
+extern PI_ColorScheme    g_global_color_scheme;
 
 ODPointPropertiesImpl::ODPointPropertiesImpl( wxWindow* parent )
 :
@@ -354,7 +355,7 @@ void ODPointPropertiesImpl::SaveChanges()
             
         }
         m_pODPoint->CreateColourSchemes();
-        m_pODPoint->SetColourScheme(g_ocpn_draw_pi->GetColorScheme());
+        m_pODPoint->SetColourScheme(g_global_color_scheme);
 
         m_pODPoint->SetVisible( m_checkBoxVisible->GetValue() );
         m_pODPoint->SetNameShown( m_checkBoxShowName->GetValue() );

@@ -322,7 +322,6 @@ public:
     wxString GetLongDescription();
     void UpdateAuiStatus(void);
 //    void SetColorScheme(PI_ColorScheme cs);
-    PI_ColorScheme GetColorScheme() { return m_global_color_scheme;};
     void GetOriginalColors();
     void SetOriginalColors();
     void LateInit(void);
@@ -483,7 +482,6 @@ private:
     int                m_config_button_id;
 
     bool              m_bLOGShowIcon;
-    PI_ColorScheme    m_global_color_scheme;
     
     Boundary    *m_pSelectedBoundary;
     EBL         *m_pSelectedEBL;
