@@ -649,7 +649,8 @@ int ocpn_draw_pi::Init(void)
     g_pBoundaryPropDialog = NULL;
     g_pEBLPropDialog = NULL;
     g_pDRPropDialog = NULL;
-    g_pPILPropDialog = NULL;
+    g_pGZPropDialog = NULL;
+    g_pPILPropDialog = NULL;    
     g_PILIndexLinePropDialog = NULL;
     
     g_pODConfig->LoadNavObjects();
@@ -701,8 +702,26 @@ bool ocpn_draw_pi::DeInit(void)
     g_pODRolloverWin = NULL;
     if( g_pODPointPropDialog ) delete g_pODPointPropDialog;
     g_pODPointPropDialog = NULL;
-    if( g_pODPathPropDialog ) delete g_pODPathPropDialog;
+
     g_pODPathPropDialog = NULL;
+    if ( g_pBoundaryPropDialog ) g_pBoundaryPropDialog->Destroy();
+    g_pBoundaryPropDialog = 0;
+
+    if ( g_pEBLPropDialog ) g_pEBLPropDialog->Destroy();
+    g_pEBLPropDialog = 0;
+
+    if ( g_pDRPropDialog ) g_pDRPropDialog->Destroy();
+    g_pDRPropDialog = 0;
+
+    if ( g_pGZPropDialog ) g_pGZPropDialog->Destroy();
+    g_pGZPropDialog = 0;
+
+    if ( g_pPILPropDialog )  g_pPILPropDialog->Destroy();
+    g_pPILPropDialog = 0;
+
+    if ( g_PILIndexLinePropDialog )  g_PILIndexLinePropDialog->Destroy();
+    g_PILIndexLinePropDialog = 0;
+
     if( g_pODToolbar ) g_pODToolbar->Destroy();
     g_pODToolbar = NULL;
     if( g_pODJSON ) delete g_pODJSON;
