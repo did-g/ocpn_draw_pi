@@ -699,29 +699,36 @@ bool ocpn_draw_pi::DeInit(void)
     m_parent_window->Disconnect( m_RolloverPopupTimer.GetId(), wxTimerEventHandler( ODEventHandler::OnRolloverPopupTimerEvent ) );
     if( g_ODEventHandler ) delete g_ODEventHandler;
     g_ODEventHandler = NULL;
+
     if( g_pODRolloverWin ) g_pODRolloverWin->Destroy();
     g_pODRolloverWin = NULL;
-    if( g_pODPointPropDialog ) delete g_pODPointPropDialog;
-    g_pODPointPropDialog = NULL;
 
     g_pODPathPropDialog = NULL;
+
+    if( g_pODPointPropDialog ) g_pODPointPropDialog->Destroy();
+    g_pODPointPropDialog = NULL;
+
     if ( g_pBoundaryPropDialog ) g_pBoundaryPropDialog->Destroy();
-    g_pBoundaryPropDialog = 0;
+    g_pBoundaryPropDialog = NULL;
 
     if ( g_pEBLPropDialog ) g_pEBLPropDialog->Destroy();
-    g_pEBLPropDialog = 0;
+    g_pEBLPropDialog = NULL;
 
     if ( g_pDRPropDialog ) g_pDRPropDialog->Destroy();
-    g_pDRPropDialog = 0;
+    g_pDRPropDialog = NULL;
 
     if ( g_pGZPropDialog ) g_pGZPropDialog->Destroy();
-    g_pGZPropDialog = 0;
+    g_pGZPropDialog = NULL;
 
     if ( g_pPILPropDialog )  g_pPILPropDialog->Destroy();
-    g_pPILPropDialog = 0;
+    g_pPILPropDialog = NULL;
 
     if ( g_PILIndexLinePropDialog )  g_PILIndexLinePropDialog->Destroy();
-    g_PILIndexLinePropDialog = 0;
+    g_PILIndexLinePropDialog = NULL;
+
+    if ( g_pPathManagerDialog )  g_pPathManagerDialog->Destroy();
+    g_pPathManagerDialog = NULL;
+
 
     if( g_pODToolbar ) g_pODToolbar->Destroy();
     g_pODToolbar = NULL;
@@ -743,6 +750,14 @@ bool ocpn_draw_pi::DeInit(void)
         g_pODConfig->UpdateNavObj();
         SaveConfig();
     }
+
+    delete g_pGZMan;
+    delete g_pBoundaryMan;
+    delete g_pPathMan;
+#if 0
+    // XXX FIXME core dump
+    delete g_pODPointMan;
+#endif
     shutdown(false);
     return true;
 }
