@@ -155,5 +155,6 @@ private:
 
     double          m_dScaleFactor;
     PI_ColorScheme  m_ColourScheme;
+    bool            m_failedBitmapLoad;
 };
 #endif /* ODICONS_H */
