@@ -411,11 +411,8 @@ void GZ::UpdateGZSelectablePath( void )
         l_iSteps = ceil(24 * (fabs((360 - m_dFirstLineDirection) + m_dSecondLineDirection))/360) - 1;
         l_dStepSize = fabs((360 - m_dFirstLineDirection) + m_dSecondLineDirection) / l_iSteps;
     }
-    double firstDirection;
-    double secondDirection;
-
-    firstDirection = m_dFirstLineDirection;
-    secondDirection = m_dSecondLineDirection;
+    double firstDirection = m_dFirstLineDirection;
+    double secondDirection = m_dSecondLineDirection;
     if(m_bRotateWithBoat) {
         switch(m_iMaintainWith) {
             case ID_MAINTAIN_WITH_HEADING:
@@ -431,7 +428,7 @@ void GZ::UpdateGZSelectablePath( void )
                 }
                 break;
         }
-    }
+    } 
     
     PositionBearingDistanceMercator_Plugin( m_dCentreLat, m_dCentreLon, firstDirection, m_dFirstDistance, &l_dPrevLat, &l_dPrevLon);
     PositionBearingDistanceMercator_Plugin( m_dCentreLat, m_dCentreLon, firstDirection, m_dSecondDistance, &l_dLat, &l_dLon);
@@ -502,12 +499,8 @@ void GZ::GetLatLonPoints( PlugIn_ViewPort &piVP, wxPoint *l_pCentre, wxPoint *l_
 {
     double l_dLat;
     double l_dLon;
-    double firstDirection;
-    double secondDirection;
-
-    firstDirection = m_dFirstLineDirection;
-    secondDirection = m_dSecondLineDirection;
-
+    double firstDirection = m_dFirstLineDirection;
+    double secondDirection = m_dSecondLineDirection;
     if(m_bRotateWithBoat) {
         switch(m_iMaintainWith) {
             case ID_MAINTAIN_WITH_HEADING:
@@ -523,7 +516,7 @@ void GZ::GetLatLonPoints( PlugIn_ViewPort &piVP, wxPoint *l_pCentre, wxPoint *l_
                 }
                 break;
         }
-    }
+    } 
     // get x, y of first point on first line
     ODPoint *l_point = m_pODPointList->GetFirst()->GetData();
     GetCanvasPixLL( &piVP, *&l_l1p1, l_point->m_lat, l_point->m_lon );
@@ -563,11 +556,8 @@ LLBBox GZ::GetBBox( void )
     
     double l_dLat;
     double l_dLon;
-    double firstDirection;
-    double secondDirection;
-    firstDirection = m_dFirstLineDirection;
-    secondDirection = m_dSecondLineDirection;
-
+    double firstDirection = m_dFirstLineDirection;
+    double secondDirection = m_dSecondLineDirection;
     if(m_bRotateWithBoat) {
         switch(m_iMaintainWith) {
             case ID_MAINTAIN_WITH_HEADING:

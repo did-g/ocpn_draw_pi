@@ -651,7 +651,7 @@ int ocpn_draw_pi::Init(void)
     g_pEBLPropDialog = NULL;
     g_pDRPropDialog = NULL;
     g_pGZPropDialog = NULL;
-    g_pPILPropDialog = NULL;    
+    g_pPILPropDialog = NULL;
     g_PILIndexLinePropDialog = NULL;
     
     g_pODConfig->LoadNavObjects();
@@ -729,7 +729,6 @@ bool ocpn_draw_pi::DeInit(void)
     if ( g_pPathManagerDialog )  g_pPathManagerDialog->Destroy();
     g_pPathManagerDialog = NULL;
 
-
     if( g_pODToolbar ) g_pODToolbar->Destroy();
     g_pODToolbar = NULL;
     if( g_pODJSON ) delete g_pODJSON;
@@ -756,6 +755,8 @@ bool ocpn_draw_pi::DeInit(void)
     delete g_pPathMan;
 #if 0
     // XXX FIXME core dump
+    // path first/last point is inserted twice in the list
+    // but points have only one manager pointer so double freed.
     delete g_pODPointMan;
 #endif
     shutdown(false);
