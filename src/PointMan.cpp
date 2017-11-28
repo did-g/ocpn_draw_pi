@@ -878,12 +878,12 @@ static double deg2rad(double degree) { return degree*(M_PI/180.0); }
 // XXX FIXME 0 and 360
 static bool DistancePointLine( double pLon, double pLat, 
             double StartLon, double StartLat, double EndLon, double EndLat, 
-            double *lon, double *lat, double *Distance )
+            double Distance )
 {
    double sx, sy;
    double ex, ey;
    double px, py;
-   double r = *Distance;
+   double r = Distance;
 
    double LineMag;
    double U;
@@ -919,7 +919,7 @@ static bool DistancePointLine( double pLon, double pLat,
    return true;
 }
 
-wxString PointMan::FindLineCrossingBoundary( double StartLon, double StartLat, double EndLon, double EndLat, double *CrossingLon, double *CrossingLat, double *CrossingDist, int type, int state )
+wxString PointMan::FindLineCrossingBoundary( double StartLon, double StartLat, double EndLon, double EndLat, int type, int state )
 {
     // search boundary point
     wxODPointListNode *node = GetODPointList()->GetFirst();
@@ -958,7 +958,7 @@ wxString PointMan::FindLineCrossingBoundary( double StartLon, double StartLat, d
             if (!l_bNext) {
                double f = (op->m_iODPointRangeRingsStepUnits == 1)?1000.0:1852.31;
                double dst = op->GetODPointRangeRingsNumber() * op->GetODPointRangeRingsStep() * f;
-               if (DistancePointLine( op->m_lon, op->m_lat, StartLon, StartLat, EndLon, EndLat, CrossingLon, CrossingLat, &dst )) {
+               if (DistancePointLine( op->m_lon, op->m_lat, StartLon, StartLat, EndLon, EndLat, dst )) {
                   return op->m_GUID;
                }
             }

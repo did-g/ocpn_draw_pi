@@ -133,7 +133,7 @@ bool ODAPI::OD_FindClosestBoundaryLineCrossing( FindClosestBoundaryLineCrossing_
     // point state is meaningless for boundary test
     l_BoundaryState = ID_POINT_STATE_ANY;
 
-    l_sGUID = g_pODPointMan->FindLineCrossingBoundary( pFCBLC->dStartLon, pFCBLC->dStartLat, pFCBLC->dEndLon, pFCBLC->dEndLat, &pFCBLC->dCrossingLon, &pFCBLC->dCrossingLat, &pFCBLC->dCrossingDistance, l_BoundaryType, l_BoundaryState );
+    l_sGUID = g_pODPointMan->FindLineCrossingBoundary( pFCBLC->dStartLon, pFCBLC->dStartLat, pFCBLC->dEndLon, pFCBLC->dEndLat, l_BoundaryType, l_BoundaryState );
     if(l_sGUID.length() > 0) {
         BoundaryPoint *l_boundary = dynamic_cast<BoundaryPoint *>(g_pODPointMan->FindODPointByGUID( l_sGUID ));
         assert (l_boundary != 0);
