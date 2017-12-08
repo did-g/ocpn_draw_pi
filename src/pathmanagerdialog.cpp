@@ -1916,7 +1916,34 @@ void PathManagerDialog::OnChart2LayClick( wxCommandEvent &event )
     l_pBoundary->RebuildGUIDList(); // ensure the GUID list is intact and good
     l_pBoundary->SetHiLite(0);
     l_pBoundary->m_bIsBeingCreated = false;
-    
+    // --------------
+    ListOfPI_ChartObj *lst = GetHazards( g_VP );
+    if (lst) {
+        for( ListOfPI_ChartObj::Node *node = lst->GetFirst(); node; node = node->GetNext() ) {
+            PI_ChartObj *cobj = node->GetData();
+            char name[7];
+            memcpy(name, cobj->FeatureName, 6);
+            name[6] = 0;
+            switch (cobj->Primitive_type) {
+            case 0: // GEO_POINT
+                {
+                    BoundaryPoint *hazard = new BoundaryPoint( cobj->m_lat, cobj->m_lon, g_sODPointIconName, name , wxT("") );
+                    hazard->SetNameShown( false );
+                    hazard->SetTypeString( wxS("Boundary Point") );
+                    hazard->m_bIsolatedMark = TRUE;
+                    hazard->m_bIsolatedMark = TRUE;
+                    hazard->SetShowODPointRangeRings(true);
+                    g_pODConfig->AddNewODPoint( hazard, -1 );    // use auto next num
+                    g_pODSelect->AddSelectableODPoint( cobj->m_lat, cobj->m_lon, hazard );
+                }
+                break;
+            case 2: // GEO_AREA
+                break;
+            }
+        }    
+        delete lst;
+    }
+    // --------------
     g_bShowLayers = show_flag;
 
     UpdatePathListCtrl();
