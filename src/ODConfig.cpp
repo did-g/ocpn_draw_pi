@@ -415,8 +415,8 @@ void ODConfig::ExportGPX( wxWindow* parent, bool bviz_only, bool blayer )
                 wxString msg;
                 msg.Printf(_T("%d/%d"), ic, count);
                 pprog->Update( ic, msg );
-                ic++;
             }
+            ic++;
 
             pr = node->GetData();
 
