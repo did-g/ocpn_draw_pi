@@ -1547,8 +1547,8 @@ ODPoint *ODNavObjectChanges::ODPointExists( const wxString& name, double lat, do
 
 //        if( pr->m_bIsInLayer ) return NULL;
 
-        if( name == pr->GetName() ) {
-            if( fabs( lat - pr->m_lat ) < 1.e-6 && fabs( lon - pr->m_lon ) < 1.e-6 ) {
+        if( fabs( lat - pr->m_lat ) < 1.e-6 && fabs( lon - pr->m_lon ) < 1.e-6 ) {
+            if( name == pr->GetName() ) {
                 pret = pr;
                 break;
             }
