@@ -62,6 +62,7 @@ extern bool             g_bExclusionBoundaryPoint;
 extern bool             g_bInclusionBoundaryPoint;
 extern int              g_navobjbackups;
 extern int              g_iGZMaxNum;
+extern PI_ColorScheme   g_global_color_scheme;
 
 extern PI_ColorScheme    g_global_color_scheme;
 
@@ -1535,7 +1536,7 @@ ODPath *ODNavObjectChanges::GPXLoadPath1( pugi::xml_node &odpoint_node  , bool b
     pTentPath->CreateColourSchemes();
     pTentPath->SetColourScheme(g_global_color_scheme);
     pTentPath->SetActiveColours();
-
+    
     pTentPath->UpdateSegmentDistances();
     pTentPath->m_bIsBeingCreated = false;
     
@@ -1658,6 +1659,10 @@ void ODNavObjectChanges::InsertPathA( ODPath *pTentPath )
              GZ * pGZ = (GZ *)pTentPath;
              pGZ->UpdateGZSelectablePath();
          }
+         pTentPath->CreateColourSchemes();
+         pTentPath->SetColourScheme(g_global_color_scheme);
+         pTentPath->SetActiveColours();
+         
     }
     else {
         
@@ -1846,12 +1851,17 @@ void ODNavObjectChanges::UpdatePathA( ODPath *pPathUpdate )
     ODPath * pExistingPath = PathExists( pPathUpdate->m_GUID );
 
     if( pExistingPath ) {
+        Boundary *pBoundary = NULL;
         EBL *pEBL = NULL;
         DR *pDR = NULL;
         GZ *pGZ = NULL;
         PIL *pPIL = NULL;
         
-        if(pPathUpdate->m_sTypeString == wxT("EBL")) {
+        if(pPathUpdate->m_sTypeString == wxT("Boundary")) {
+            pBoundary = (Boundary *)pExistingPath;
+            Boundary *puBoundary = (Boundary *)pPathUpdate;
+            pBoundary->SetColours( puBoundary );
+        } else if(pPathUpdate->m_sTypeString == wxT("EBL")) {
             pEBL = (EBL *)pExistingPath;
             EBL *puEBL = (EBL *)pPathUpdate;
             pEBL->SetPersistence(puEBL->m_iPersistenceType);
@@ -1907,6 +1917,9 @@ void ODNavObjectChanges::UpdatePathA( ODPath *pPathUpdate )
             g_pODSelect->AddAllSelectablePathSegments( pExistingPath );
             g_pODSelect->AddAllSelectableODPoints( pExistingPath );
         }
+        pExistingPath->CreateColourSchemes();
+        pExistingPath->SetColourScheme(g_global_color_scheme);
+        pExistingPath->SetActiveColours();
     } else {
         InsertPathA( pPathUpdate );
     }
