@@ -1208,6 +1208,14 @@ void ocpn_draw_pi::OnToolbarToolUpCallback(int id)
     m_pODicons->SetScaleFactor();
     return;
 }
+void ocpn_draw_pi::RecreateConfig()
+{
+    wxFileConfig *pConf = m_pODConfig;
+    if(pConf) {
+        pConf->SetPath( wxS( "/Settings/ocpn_draw_pi" ) );
+        pConf->DeleteGroup( "/Settings/ocpn_draw_pi" );
+    }
+}
 void ocpn_draw_pi::SaveConfig()
 {
     wxFileConfig *pConf = m_pODConfig;
