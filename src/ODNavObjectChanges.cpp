@@ -1517,6 +1517,8 @@ ODPath *ODNavObjectChanges::GPXLoadPath1( pugi::xml_node &odpoint_node  , bool b
         if( b_fullviz )
             pTentPath->SetVisible();
     }
+    
+    pTentPath->SetPointVisibility();
 
     pTentPath->m_bPathIsActive = b_active;
     
