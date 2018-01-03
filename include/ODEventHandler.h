@@ -70,12 +70,13 @@ class ODEventHandler : public wxEvtHandler
         void SetPIL( int iPIL );
         void SetCanvas( ChartCanvas *canvas );
         void SetLatLon( double lat, double lon );
-        void DeletePath( void );
-        void DeletePaths( void );
-        void DeletePIL( void );
         
     protected:
     private:
+        void DeletePath( void );
+        void DeletePaths( void );
+        void DeletePIL( void );
+
         ocpn_draw_pi    *m_parent;
         ChartCanvas     *m_parentcanvas;
         ODPath          *m_pSelectedPath;
