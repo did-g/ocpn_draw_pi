@@ -68,6 +68,8 @@
                         (OUT_POINTTEXT)
 
 //class ODNavObjectChanges : public NavObjectChanges
+#include <map>
+
 class ODNavObjectChanges : public pugi::xml_document
 {
     public:
@@ -129,8 +131,7 @@ class ODNavObjectChanges : public pugi::xml_document
         void CreateRotatingNavObjChangesBackup();
         
         wxString m_ODfilename;
-        ODPointList *m_ptODPointList;
-
+        std::map<wxString, ODPoint *> m_ptODPointMap;
 };
 
 #endif // OCPNDRAWNAVOBJECTCHANGES_H

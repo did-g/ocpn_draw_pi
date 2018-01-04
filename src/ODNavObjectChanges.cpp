@@ -66,12 +66,12 @@ extern PI_ColorScheme   g_global_color_scheme;
 
 extern PI_ColorScheme    g_global_color_scheme;
 
+
 ODNavObjectChanges::ODNavObjectChanges() : pugi::xml_document()
 {
     //ctor
     m_bFirstPath = true;
     m_ODchanges_file = 0;
-    m_ptODPointList = new ODPointList;
 }
 
 ODNavObjectChanges::ODNavObjectChanges(wxString file_name) : pugi::xml_document()
@@ -80,7 +80,6 @@ ODNavObjectChanges::ODNavObjectChanges(wxString file_name) : pugi::xml_document(
     m_ODfilename = file_name;
     m_ODchanges_file = fopen(m_ODfilename.mb_str(), "a");
     m_bFirstPath = true;
-    m_ptODPointList = new ODPointList;
 }
 
 ODNavObjectChanges::~ODNavObjectChanges()
@@ -91,8 +90,7 @@ ODNavObjectChanges::~ODNavObjectChanges()
 
     if( ::wxFileExists( m_ODfilename ) )
         ::wxRemoveFile( m_ODfilename );
-    m_ptODPointList->clear();
-    delete m_ptODPointList;
+    m_ptODPointMap.clear();
 }
 
 void ODNavObjectChanges::RemoveChangesFile( void )
@@ -1147,7 +1145,7 @@ ODPoint * ODNavObjectChanges::GPXLoadODPoint1( pugi::xml_node &opt_node,
         else
             pOP = new ODPoint( rlat, rlon, SymString, NameString, GuidString, false ); // do not add to global WP list yet...
             
-        m_ptODPointList->Append( pOP ); 
+        m_ptODPointMap[ pOP->m_GUID ] = pOP;
     } else {
         if(pOP->m_sTypeString == wxT("Text Point")) {
             pTP = dynamic_cast<TextPoint *>(pOP);
@@ -1581,34 +1579,15 @@ ODPoint *ODNavObjectChanges::ODPointExists( const wxString& guid )
 
 ODPoint *ODNavObjectChanges::tempODPointExists( const wxString& guid )
 {
-    wxODPointListNode *node = m_ptODPointList->GetFirst();
-    while( node ) {
-        ODPoint *pp = node->GetData();
-        
-        //        if( pr->m_bIsInLayer ) return NULL;
-        //TODO fix crash when pp->m_GUID is not valid. Why is this so? appears to be when a point is updated twice, but.....
-        if( !pp->m_GUID.IsEmpty() && pp->m_GUID.length() > 0 && guid == pp->m_GUID ) {
-            return pp;
-        }
-        node = node->GetNext();
-    }
-    
-    return NULL;
+    std::map<wxString, ODPoint *>::iterator it = m_ptODPointMap.find( guid );
+    if (it == m_ptODPointMap.end( ))
+        return 0;
+    return it->second;
 }
 
 void ODNavObjectChanges::tempODPointRemove( const wxString& guid )
 {
-    wxODPointListNode *node = m_ptODPointList->GetFirst();
-    while( node ) {
-        ODPoint *pp = node->GetData();
-        wxODPointListNode *next = node->GetNext();
-        
-        if( pp && guid == pp->m_GUID ) {
-            m_ptODPointList->DeleteNode( node );
-            return;
-        }
-        node = next;
-    }
+    m_ptODPointMap.erase( guid );
 }
 
 void ODNavObjectChanges::InsertPathA( ODPath *pTentPath )
