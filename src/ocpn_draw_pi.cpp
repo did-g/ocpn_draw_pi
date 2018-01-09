@@ -709,7 +709,6 @@ bool ocpn_draw_pi::DeInit(void)
     m_parent_window->Disconnect( m_RolloverPopupTimer.GetId(), wxTimerEventHandler( ODEventHandler::OnRolloverPopupTimerEvent ) );
     if( g_ODEventHandler ) delete g_ODEventHandler;
     g_ODEventHandler = NULL;
-
     if( g_pODRolloverWin ) g_pODRolloverWin->Destroy();
     g_pODRolloverWin = NULL;
 

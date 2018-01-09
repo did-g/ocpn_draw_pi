@@ -63,7 +63,6 @@ extern ODPathPropertiesDialogImpl *g_pODPathPropDialog;
 extern int                  g_iTextPosition;
 extern int                  g_iBoundaryPointRangeRingLineWidth;
 extern int                  g_iBoundaryPointRangeRingLineStyle;
-extern PI_ColorScheme       g_global_color_scheme;
 
 extern PI_ColorScheme       g_global_color_scheme;
 
@@ -314,7 +313,7 @@ void ODPointPropertiesImpl::SaveChanges()
         m_pODPoint->m_wxcODPointRangeRingsColour = m_colourPickerRangeRingsColour->GetColour();
         m_pODPoint->CreateColourSchemes();
         m_pODPoint->SetColourScheme(g_global_color_scheme);
-        
+
         m_pODPoint->SetName( m_textName->GetValue() );
         m_pODPoint->SetODPointArrivalRadius( m_textCtrlODPointArrivalRadius->GetValue() );
         m_pODPoint->SetShowODPointRangeRings( m_checkBoxShowODPointRangeRings->GetValue() );
@@ -360,9 +359,6 @@ void ODPointPropertiesImpl::SaveChanges()
             
             
         }
-        m_pODPoint->CreateColourSchemes();
-        m_pODPoint->SetColourScheme(g_global_color_scheme);
-
         m_pODPoint->SetVisible( m_checkBoxVisible->GetValue() );
         m_pODPoint->SetNameShown( m_checkBoxShowName->GetValue() );
         if(m_pODPoint->m_sTypeString == wxT("Guard Zone Point")) {
