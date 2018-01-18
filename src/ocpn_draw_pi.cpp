@@ -3205,6 +3205,8 @@ bool ocpn_draw_pi::CreatePointLeftClick( wxMouseEvent &event )
         
         g_pODConfig->AddNewODPoint( pMousePoint, -1 );    // use auto next num
         g_pODSelect->AddSelectableODPoint( rlat, rlon, pMousePoint );
+        if( g_pPathManagerDialog && g_pPathManagerDialog->IsShown() )
+            g_pPathManagerDialog->UpdateODPointsListCtrl();
         
     }
     
@@ -3268,6 +3270,8 @@ bool ocpn_draw_pi::CreateTextPointLeftClick( wxMouseEvent &event )
         
         g_pODConfig->AddNewODPoint( pMousePoint, -1 );    // use auto next num
         g_pODSelect->AddSelectableODPoint( rlat, rlon, pMousePoint );
+        if( g_pPathManagerDialog && g_pPathManagerDialog->IsShown() )
+            g_pPathManagerDialog->UpdateODPointsListCtrl();
         
     }
     
