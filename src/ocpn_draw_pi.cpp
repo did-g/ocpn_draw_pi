@@ -3128,7 +3128,8 @@ void ocpn_draw_pi::DrawAllODPointsInBBox( ODDC& dc, LLBBox& BltBBox )
     //        wxBoundingBox bbx;
     if(!g_pODPointMan)
         return;
-    
+    // XXX m_ODPointIsolated;
+
     wxODPointListNode *node = g_pODPointMan->GetODPointList()->GetFirst();
     while( node ) {
         ODPoint *pOP = node->GetData();
@@ -3805,6 +3806,7 @@ void ocpn_draw_pi::DrawAllPathsAndODPoints( PlugIn_ViewPort &pivp )
         
     /* ODPoints not drawn as part of routes */
     if( pivp.bValid && g_pODPointMan ) {
+        // XXX m_ODPointIsolated;
         for(wxODPointListNode *pnode = g_pODPointMan->GetODPointList()->GetFirst(); pnode; pnode = pnode->GetNext() ) {
             ODPoint *pOP = pnode->GetData();
             if( ( pOP->m_lon >= pivp.lon_min && pOP->m_lon <= pivp.lon_max ) && ( pOP->m_lat >= pivp.lat_min && pOP->m_lat <= pivp.lat_max ) )

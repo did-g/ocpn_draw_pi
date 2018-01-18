@@ -867,6 +867,8 @@ wxString PointMan::FindLineCrossingBoundary( double StartLon, double StartLat, d
 {
     // search boundary point
     wxODPointListNode *node = GetODPointList()->GetFirst();
+    // XXX m_ODPointIsolated;
+
     while( node ) {
         ODPoint *od = static_cast<ODPoint *>(node->GetData());
         if( od->IsListed() ) {

@@ -1487,6 +1487,7 @@ void PathManagerDialog::UpdateODPointsListCtrl( ODPoint *op_select, bool b_retai
     m_pODPointListCtrl->DeleteAllItems();
 
     wxODPointListNode *node = g_pODPointMan->GetODPointList()->GetFirst();
+    // XXX m_ODPointIsolated;
 
     long index = 0;
     while( node ) {
@@ -2247,6 +2248,7 @@ void PathManagerDialog::OnLayDeleteClick( wxCommandEvent &event )
     // Process ODPoints in this layer
     wxODPointListNode *node = g_pODPointMan->GetODPointList()->GetFirst();
     wxODPointListNode *node3;
+    // XXX m_ODPointIsolated;
 
     while( node ) {
         node3 = node->GetNext();

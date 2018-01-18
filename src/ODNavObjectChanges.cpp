@@ -741,7 +741,7 @@ bool ODNavObjectChanges::CreateNavObjGPXPoints( void )
     
     if(!g_pODPointMan)
         return false;
-    
+    // XXX m_ODPointIsolated;
     wxODPointListNode *node = g_pODPointMan->GetODPointList()->GetFirst();
     
     ODPoint *pOP;
