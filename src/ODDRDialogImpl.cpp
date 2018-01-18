@@ -202,7 +202,6 @@ void ODDRDialogImpl::OnOK( wxCommandEvent& event )
         
         if( g_pODPointPropDialog && g_pODPointPropDialog->IsShown() ) {
             g_pODPointPropDialog->ValidateMark();
-            g_pODPointPropDialog->UpdateProperties();
         }
         
     }
