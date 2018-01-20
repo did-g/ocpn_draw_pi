@@ -453,6 +453,11 @@ wxString BoundaryMan::FindLineCrossingBoundary( double StartLon, double StartLat
     while( boundary_node ) {
         bool    l_bNext = false;
         pboundary = boundary_node->GetData();
+        if( !pboundary->IsListed() ) {
+            boundary_node = boundary_node->GetNext();
+            continue;
+        }
+
         switch (state) {
             case ID_PATH_STATE_ANY:
                 l_bNext = false;
