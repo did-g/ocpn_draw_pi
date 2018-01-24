@@ -126,6 +126,9 @@ bool ODAPI::OD_FindClosestBoundaryLineCrossing( FindClosestBoundaryLineCrossing_
         pFCBLC->sName = l_boundary->m_PathNameString;
         pFCBLC->sDescription = l_boundary->m_PathDescription;
         pFCBLC->sGUID = l_sGUID;
+        if (l_boundary->m_bInclusionBoundary) {
+            pFCBLC->sBoundaryType = wxT("Inclusion");
+        }
         pFCBLC->sBoundaryObjectType = wxT("Boundary");
         return true;
     }
