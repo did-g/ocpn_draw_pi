@@ -448,6 +448,12 @@ Boundary *BoundaryMan::FindLineCrossingBoundary(bool UseCache, double StartLon, 
     bool l_bCrosses;
     LLBBox RBBox;
     RBBox.SetFromSegment(StartLat, StartLon, EndLat, EndLon);
+    // XXX hack
+    bool firstOne = false;
+    if (*CrossingDist == -1.) {
+        *CrossingDist = 0.;
+        firstOne = true;
+    }
 
     std::list<BOUNDARYCROSSING> BoundaryCrossingList;
     if (UseCache && g_pBoundaryCacheList != 0) 
@@ -513,6 +519,8 @@ Boundary *BoundaryMan::FindLineCrossingBoundary(bool UseCache, double StartLon, 
                     DistanceBearingMercator_Plugin( StartLat, StartLon, l_dCrossingLat, l_dCrossingLon, &brg, &len );
                     l_BoundaryCrossing.Len = len;
                     BoundaryCrossingList.push_back(l_BoundaryCrossing);
+                    if (firstOne)
+                        goto end;
                 }
                 popFirst = popSecond;
                 OCPNpoint_next_node = OCPNpoint_next_node->GetNext();
@@ -520,6 +528,7 @@ Boundary *BoundaryMan::FindLineCrossingBoundary(bool UseCache, double StartLon, 
         }
         boundary_node = boundary_node->GetNext();                         // next boundary
     }
+    end:
     // if list of crossings <> 0 then find one closest to start point
     if(!BoundaryCrossingList.empty()) {
         std::list<BOUNDARYCROSSING>::iterator it = BoundaryCrossingList.begin();
