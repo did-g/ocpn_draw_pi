@@ -830,7 +830,7 @@ bool PointMan::DistancePointLine( double pLon, double pLat, double StartLon, dou
    double ex, ey;
    double px, py;
    double r = Distance;
-   double radius = 6371007.2;
+   double radius = 6371007.2; // in meters
 
    sx = radius *cos(deg2rad(pLat)) * deg2rad(StartLon);
    sy = radius *deg2rad(StartLat);
@@ -955,7 +955,9 @@ BoundaryPoint *PointMan::FindLineCrossingBoundary( bool UseCache, double StartLo
                     break;
             }
             if (!l_bNext) {
+               // 0 nautical miles 1 kilometer
                double f = (op->m_iODPointRangeRingsStepUnits == 1)?1000.0:1852.31;
+               // in meters
                double dst = op->GetODPointRangeRingsNumber() * op->GetODPointRangeRingsStep() * f;
                if (DistancePointLine( op->m_lon, op->m_lat, StartLon, StartLat, EndLon, EndLat, dst )) {
                   return op;
