@@ -673,7 +673,9 @@ int ocpn_draw_pi::Init(void)
         
         g_pODConfig->LoadLayers(*g_pLayerDir);
     }
-    
+
+    m_position_menu_id = AddCanvasMenuItem (new wxMenuItem(&dummy_menu, -1, _("Validate this Route")), this, "Route" );
+
     return (
     WANTS_OVERLAY_CALLBACK  |
     WANTS_CURSOR_LATLON       |
@@ -847,7 +849,10 @@ void ocpn_draw_pi::SendVectorChartObjectInfo(wxString &chart, wxString &feature,
 
 void ocpn_draw_pi::OnContextMenuItemCallback(int id)
 {
-    switch ( id ) {
+    if (id == m_position_menu_id) {
+      // m_pWeather_Routing->AddPosition(m_cursor_lat, m_cursor_lon);
+    }            
+    else switch ( id ) {
         case ID_PATH_MENU_PROPERTIES: {
             //        ShowPathPropertiesDialog( wxT("Path Properties"), m_pSelectedPath );
             break;
