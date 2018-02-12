@@ -1142,7 +1142,7 @@ ODPoint * ODNavObjectChanges::GPXLoadODPoint1( bool *b_new, pugi::xml_node &opt_
     if(!pOP) {
         pOP = ODPointExists( GuidString );
         // ODPointExists on name/lat/lon is true shortcut
-        if (b_new) *b_new = false;
+        if (b_new && pOP) *b_new = false;
     }
     if( !pOP ) {
         if( TypeString == wxT("Text Point") ) {
