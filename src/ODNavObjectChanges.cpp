@@ -1574,19 +1574,7 @@ ODPoint *ODNavObjectChanges::ODPointExists( const wxString& name, double lat, do
 
 ODPoint *ODNavObjectChanges::ODPointExists( const wxString& guid )
 {
-    wxODPointListNode *node = g_pODPointMan->GetODPointList()->GetFirst();
-    while( node ) {
-        ODPoint *pr = node->GetData();
-
-//        if( pr->m_bIsInLayer ) return NULL;
-
-        if( guid == pr->m_GUID ) {
-            return pr;
-        }
-        node = node->GetNext();
-    }
-
-    return NULL;
+    return g_pODPointMan->ODPointExists( guid );
 }
 
 ODPoint *ODNavObjectChanges::tempODPointExists( const wxString& guid )
