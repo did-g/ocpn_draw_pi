@@ -480,20 +480,42 @@ void PathManagerDialog::OnTabSwitch( wxNotebookEvent &event )
     
     switch (current_page)
     {
-        case 0:
+        case 0: {
             // Path
-            if ( m_pPathListCtrl ) UpdatePathListCtrl();
-            break;
-            
-        case 1:
+            if ( m_pPathListCtrl ) {
+                UpdatePathListCtrl();
+                wxString l_sLabel = _("I&mport");
+                l_sLabel.Append(_T(" "));
+                l_sLabel.Append(g_pODConfig->m_sImport_Type);
+                l_sLabel.Append(_T("..."));
+                btnImport->SetLabel(l_sLabel);
+                break;
+            }
+        }
+        case 1: {
             // Point
-            if ( m_pODPointListCtrl ) UpdateODPointsListCtrl();
-            break;
-            
-        case 2:
+            if ( m_pODPointListCtrl ) {
+                UpdateODPointsListCtrl();
+                wxString l_sLabel = _("I&mport");
+                l_sLabel.Append(_T(" "));
+                l_sLabel.Append(g_pODConfig->m_sImport_Type);
+                l_sLabel.Append(_T("..."));
+                btnImport->SetLabel(l_sLabel);
+                break;
+            }
+        }
+        case 2: {
             // Layer
-            break;
-            
+            if( m_pLayListCtrl ) {
+                UpdateLayListCtrl();
+                wxString l_sLabel = _("I&mport");
+                l_sLabel.Append(_T(" "));
+                l_sLabel.Append(_("gpx"));
+                l_sLabel.Append(_T("..."));
+                btnImport->SetLabel(l_sLabel);
+                break;
+            }
+        }            
         case wxNOT_FOUND:
             break;
             
@@ -518,6 +540,7 @@ void PathManagerDialog::OnTabSwitch( wxNotebookEvent &event )
 PathManagerDialog::PathManagerDialog( wxWindow *parent )
 {
     m_wParent = parent;
+    m_iPage = -1;
     
     long style = wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER;
 #ifdef __WXOSX__
@@ -547,12 +570,13 @@ void PathManagerDialog::Create()
     SetSizer( itemBoxSizer1 );
     m_pPathListCtrl = NULL;
     m_pODPointListCtrl = NULL;
+    m_pLayListCtrl = NULL;
 
     m_pNotebook = new wxNotebook( this, wxID_ANY, wxDefaultPosition, wxSize( -1, -1 ), wxNB_TOP );
     itemBoxSizer1->Add( m_pNotebook, 1, wxALL | wxEXPAND, 5 );
 
     //  Create "Path" panel
-    m_pPanelPath = new wxPanel( m_pNotebook, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+    m_pPanelPath = new wxPanel( m_pNotebook, PATH_TAB, wxDefaultPosition, wxDefaultSize,
             wxNO_BORDER | wxTAB_TRAVERSAL );
     wxBoxSizer *sbsPaths = new wxBoxSizer( wxHORIZONTAL );
     m_pPanelPath->SetSizer( sbsPaths );
@@ -630,7 +654,7 @@ void PathManagerDialog::Create()
 
 
     //  Create "OD points" panel
-    m_pPanelODPoint = new wxPanel( m_pNotebook, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+    m_pPanelODPoint = new wxPanel( m_pNotebook, POINT_TAB, wxDefaultPosition, wxDefaultSize,
             wxNO_BORDER | wxTAB_TRAVERSAL );
     wxBoxSizer* itemBoxSizer4 = new wxBoxSizer( wxHORIZONTAL );
     m_pPanelODPoint->SetSizer( itemBoxSizer4 );
@@ -722,7 +746,7 @@ void PathManagerDialog::Create()
                         wxCommandEventHandler(PathManagerDialog::OnExportVizClick), NULL, this );
 
     //  Create "Layers" panel
-    m_pPanelLay = new wxPanel( m_pNotebook, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+    m_pPanelLay = new wxPanel( m_pNotebook, LAYER_TAB, wxDefaultPosition, wxDefaultSize,
             wxNO_BORDER | wxTAB_TRAVERSAL );
     wxBoxSizer* itemBoxSizer7 = new wxBoxSizer( wxHORIZONTAL );
     m_pPanelLay->SetSizer( itemBoxSizer7 );
@@ -792,6 +816,8 @@ void PathManagerDialog::Create()
     btnPathOK->Connect( wxEVT_COMMAND_BUTTON_CLICKED,
                             wxCommandEventHandler(PathManagerDialog::OnOK), NULL, this );
     
+    m_pNotebook->Connect( wxEVT_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler(PathManagerDialog::OnNotebookPageChanged), NULL, this );
+
     Fit();
 
     SetMinSize( GetBestSize() );
@@ -924,6 +950,8 @@ PathManagerDialog::~PathManagerDialog()
     
     btnPathOK->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED,
                         wxCommandEventHandler(PathManagerDialog::OnOK), NULL, this );
+    
+    m_pNotebook->Disconnect( wxEVT_NOTEBOOK_PAGE_CHANGED, wxNotebookEventHandler(PathManagerDialog::OnNotebookPageChanged), NULL, this );
     
     delete m_pPathListCtrl;
     delete m_pODPointListCtrl;
@@ -2045,7 +2073,8 @@ void PathManagerDialog::OnLayNewClick( wxCommandEvent &event )
     HideWithEffect(wxSHOW_EFFECT_BLEND );
 #endif
     
-    g_pODConfig->UI_ImportGPX( this, true, _T("") );
+    //g_pODConfig->UI_ImportGPX( this, true, _T("") );
+    g_pODConfig->UI_Import( this, true, true );
     
 #ifdef __WXOSX__
     ShowWithEffect(wxSHOW_EFFECT_BLEND );
@@ -2607,10 +2636,15 @@ void PathManagerDialog::OnImportClick( wxCommandEvent &event )
 #endif
     
 //    g_pODConfig->UI_ImportGPX( this );
-    g_pODConfig->UI_Import( this );
     wxString l_sLabel = _("I&mport");
     l_sLabel.Append(_T(" "));
-    l_sLabel.Append(g_pODConfig->m_sImport_Type);
+    if(m_iPage == m_pPanelLay->GetId()) {
+        g_pODConfig->UI_Import( this, true, false );
+        l_sLabel.Append(_("gpx"));
+    } else {
+        g_pODConfig->UI_Import( this );
+        l_sLabel.Append(g_pODConfig->m_sImport_Type);
+    }
     l_sLabel.Append(_T("..."));
     btnImport->SetLabel(l_sLabel);
     
@@ -2659,6 +2693,22 @@ void PathManagerDialog::OnOK(wxCommandEvent &event)
     DeSelectPaths();
 }
 
+void PathManagerDialog::OnNotebookPageChanged(wxBookCtrlEvent &event)
+{
+    m_iPage = event.GetSelection();
+    wxString l_sLabel = _("I&mport");
+    l_sLabel.Append(_T(" "));
+    if(m_iPage == m_pPanelLay->GetId()) {
+        l_sLabel.Append(_("gpx"));
+    } else {
+        l_sLabel.Append(g_pODConfig->m_sImport_Type);
+    }
+    l_sLabel.Append(_T("..."));
+    btnImport->SetLabel(l_sLabel);
+    
+}
+//END Event handlers
+
 void PathManagerDialog::DeSelectPaths( void )
 {
     long selected_item = -1;
@@ -2687,4 +2737,3 @@ void PathManagerDialog::DeSelectODPoints( void )
     Show( false );
 }
 
-//END Event handlers
