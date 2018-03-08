@@ -174,7 +174,7 @@ bool ODAPI::OD_FindFirstBoundaryLineCrossing( FindClosestBoundaryLineCrossing_t 
     }
     
     // point state is meaningless for boundary test - not true 27/02/2018
-    // l_BoundaryState = ID_POINT_STATE_ANY;
+    l_BoundaryState = ID_POINT_STATE_ANY;
     BoundaryPoint *l_op;
     l_op = g_pODPointMan->FindLineCrossingBoundaryPtr( true, pFCBLC->dStartLon, pFCBLC->dStartLat, pFCBLC->dEndLon, pFCBLC->dEndLat, l_BoundaryType, l_BoundaryState );
     if(l_op != 0) {
