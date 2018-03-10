@@ -34,6 +34,7 @@ public:
     BoundaryPoint();
     void Draw(ODDC& dc, wxPoint* rpn );
     void DrawGL(PlugIn_ViewPort& pivp);
+    bool IsTypeAndState ( int type, int state ) const;
     
     int             m_iInclusionBoundaryPointSize;
     bool            m_bExclusionBoundaryPoint;
