@@ -5,7 +5,7 @@
 ##---------------------------------------------------------------------------
 
 IF(NOT APPLE)
-  TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${wxWidgets_LIBRARIES} ${EXTRA_LIBS} )
+  TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${wxWidgets_LIBRARIES} ${PLUGINS_LIBS} )
 ENDIF(NOT APPLE)
 
 If(NOT APPLE AND NOT QT_ANDROID)
@@ -46,7 +46,7 @@ IF(UNIX)
     /usr/lib/gcc/i686-pc-linux-gnu/4.7
     )
 
-  SET(EXTRA_LIBS ${EXTRA_LIBS} ${GCOV_LIBRARY})
+  SET(PLUGINS_LIBS ${PLUGINS_LIBS} ${GCOV_LIBRARY})
  ENDIF(PROFILING)
 ENDIF(UNIX)
 
