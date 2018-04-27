@@ -1776,7 +1776,6 @@ void PathManagerDialog::OnODPointNewClick( wxCommandEvent &event )
         ODPoint *pODP = NULL;
         if(l_pType->m_iSelection == ID_ODNEWPOINTDIALOGBUTTON_BOUNDARY) {
             BoundaryPoint *pBP = new BoundaryPoint( g_dLat, g_dLon, g_sODPointIconName, wxEmptyString, wxT("") );
-            pBP->m_bIsolatedMark = true;                      // This is an isolated mark
             pODP = pBP;
         } else {
             TextPoint *pTP = new TextPoint( g_dLat, g_dLon, g_sODPointIconName, wxEmptyString, wxT("") );
@@ -2173,14 +2172,14 @@ void PathManagerDialog::OnChart2LayClick( wxCommandEvent &event )
         LLBBox l_LLBBox;
         l_LLBBox.Set(my_VP.lat_min, my_VP.lon_min, my_VP.lat_max, my_VP.lon_max);
 
-        BoundaryPoint *l_BP1 = new BoundaryPoint(l_LLBBox.GetMaxLat(), l_LLBBox.GetMaxLon(), g_sODPointIconName, wxS(""), wxT(""));
+        BoundaryPoint *l_BP1 = new BoundaryPoint(l_LLBBox.GetMaxLat(), l_LLBBox.GetMaxLon(), g_sODPointIconName, wxS(""), wxT(""), false);
         l_BP1->SetNameShown( false );
         l_BP1->SetTypeString( wxS("Boundary Point") );
         g_pODConfig->AddNewODPoint( l_BP1, -1 );
         g_pODSelect->AddSelectableODPoint( l_LLBBox.GetMaxLat(), l_LLBBox.GetMaxLon(), l_BP1 );
         l_pBoundary->AddPoint( l_BP1 );
 
-        BoundaryPoint *l_BP2 = new BoundaryPoint(l_LLBBox.GetMaxLat(), l_LLBBox.GetMinLon(), g_sODPointIconName, wxS(""), wxT(""));
+        BoundaryPoint *l_BP2 = new BoundaryPoint(l_LLBBox.GetMaxLat(), l_LLBBox.GetMinLon(), g_sODPointIconName, wxS(""), wxT(""), false);
         l_BP2->SetNameShown( false );
         l_BP2->SetTypeString( wxS("Boundary Point") );
         g_pODConfig->AddNewODPoint( l_BP2, -1 );
@@ -2188,7 +2187,7 @@ void PathManagerDialog::OnChart2LayClick( wxCommandEvent &event )
         g_pODSelect->AddSelectablePathSegment( l_LLBBox.GetMaxLat(), l_LLBBox.GetMaxLon(), l_LLBBox.GetMaxLat(), l_LLBBox.GetMinLon(), l_BP1, l_BP2, l_pBoundary );
         l_pBoundary->AddPoint( l_BP2 );
 
-        BoundaryPoint *l_BP3 = new BoundaryPoint(l_LLBBox.GetMinLat(), l_LLBBox.GetMinLon(), g_sODPointIconName, wxS(""), wxT(""));
+        BoundaryPoint *l_BP3 = new BoundaryPoint(l_LLBBox.GetMinLat(), l_LLBBox.GetMinLon(), g_sODPointIconName, wxS(""), wxT(""), false);
         l_BP3->SetNameShown( false );
         l_BP3->SetTypeString( wxS("Boundary Point") );
         g_pODConfig->AddNewODPoint( l_BP3, -1 );
@@ -2196,7 +2195,7 @@ void PathManagerDialog::OnChart2LayClick( wxCommandEvent &event )
         g_pODSelect->AddSelectablePathSegment( l_LLBBox.GetMaxLat(), l_LLBBox.GetMinLon(), l_LLBBox.GetMinLat(), l_LLBBox.GetMinLon(), l_BP2, l_BP3, l_pBoundary );
         l_pBoundary->AddPoint( l_BP3 );
 
-        BoundaryPoint *l_BP4 = new BoundaryPoint(l_LLBBox.GetMinLat(), l_LLBBox.GetMaxLon(), g_sODPointIconName, wxS(""), wxT(""));
+        BoundaryPoint *l_BP4 = new BoundaryPoint(l_LLBBox.GetMinLat(), l_LLBBox.GetMaxLon(), g_sODPointIconName, wxS(""), wxT(""), false);
         l_BP4->SetNameShown( false );
         l_BP4->SetTypeString( wxS("Boundary Point") );
         g_pODConfig->AddNewODPoint( l_BP4, -1 );
@@ -2226,7 +2225,6 @@ void PathManagerDialog::OnChart2LayClick( wxCommandEvent &event )
                     BoundaryPoint *hazard = new BoundaryPoint( cobj->m_lat, cobj->m_lon, g_sODPointIconName, name , wxT("") );
                     hazard->SetNameShown( false );
                     hazard->SetTypeString( wxS("Boundary Point") );
-                    hazard->m_bIsolatedMark = true;
                     hazard->SetShowODPointRangeRings(true);
                     if (hazard->GetODPointRangeRingsNumber() == 0) {
                         hazard->SetODPointRangeRingsColour(wxColour( 255, 0, 0 ));
@@ -2261,7 +2259,7 @@ void PathManagerDialog::OnChart2LayClick( wxCommandEvent &event )
                         // lon lat layout
                         f_lat = *(p +1);
                         f_lon = *(p);                    
-                        BoundaryPoint *l_BP1 = new BoundaryPoint(f_lat, f_lon, g_sODPointIconName, wxS(""), wxT(""));
+                        BoundaryPoint *l_BP1 = new BoundaryPoint(f_lat, f_lon, g_sODPointIconName, wxS(""), wxT(""), false);
                         l_BP1->SetNameShown( false );
                         l_BP1->SetTypeString( wxS("Boundary Point") );
                         g_pODConfig->AddNewODPoint( l_BP1, -1 );
@@ -2282,7 +2280,7 @@ void PathManagerDialog::OnChart2LayClick( wxCommandEvent &event )
                             // End of contour marker
                             if (d_Lat == 99999.)
                                 break;
-                            BoundaryPoint *l_BP3 = new BoundaryPoint(d_Lat, d_Lon, g_sODPointIconName, wxS(""), wxT(""));
+                            BoundaryPoint *l_BP3 = new BoundaryPoint(d_Lat, d_Lon, g_sODPointIconName, wxS(""), wxT(""), false);
                             l_BP3->SetNameShown( false );
                             l_BP3->SetTypeString( wxS("Boundary Point") );
                             g_pODConfig->AddNewODPoint( l_BP3, -1 );

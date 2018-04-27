@@ -460,7 +460,7 @@ ODPoint *Boundary::InsertPointAfter( ODPoint *pOP, double lat, double lon, bool 
         return NULL;
     nOP++;
     
-    BoundaryPoint *newpoint = new BoundaryPoint( lat, lon, g_sODPointIconName, GetNewMarkSequenced(), wxT("") );
+    BoundaryPoint *newpoint = new BoundaryPoint( lat, lon, g_sODPointIconName, GetNewMarkSequenced(), wxT(""), false );
     newpoint->m_bIsInPath = true;
     newpoint->m_bDynamicName = true;
     newpoint->SetNameShown( false );
