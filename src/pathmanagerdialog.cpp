@@ -2093,7 +2093,6 @@ void PathManagerDialog::OnChart2LayClick( wxCommandEvent &event )
     if (!g_VP.bValid)
         return;
 
-    PlugIn_ViewPort my_VP = g_VP;
 
     bool show_flag = g_bShowLayers;
     g_bShowLayers = true;
@@ -2105,35 +2104,6 @@ void PathManagerDialog::OnChart2LayClick( wxCommandEvent &event )
         long selected_index_index = m_pPathListCtrl->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
         l_pBoundary =  dynamic_cast<Boundary *>(g_pPathList->Item( m_pPathListCtrl->GetItemData( selected_index_index ) )->GetData());
         if ( l_pBoundary && l_pBoundary->m_bInclusionBoundary == true) {
-            LLBBox RBBox = l_pBoundary->GetBBox();
-            double clat = RBBox.GetMinLat() + ( ( RBBox.GetMaxLat() - RBBox.GetMinLat() ) / 2 );
-            double clon = RBBox.GetMinLon() + ( ( RBBox.GetMaxLon() - RBBox.GetMinLon() ) / 2 );
-            if( clon > 180. ) clon -= 360.;
-            else if( clon < -180. ) clon += 360.;
-
-            // Calculate ppm
-            double rw, rh, ppm; // route width, height, final ppm scale to use
-            int ww, wh; // chart window width, height
-            // route bbox width in nm
-            DistanceBearingMercator_Plugin( RBBox.GetMinLat(), RBBox.GetMinLon(), RBBox.GetMinLat(), 
-                RBBox.GetMaxLon(), NULL, &rw );
-            // route bbox height in nm
-            DistanceBearingMercator_Plugin( RBBox.GetMinLat(), RBBox.GetMinLon(), RBBox.GetMaxLat(),
-                RBBox.GetMinLon(), NULL, &rh );
-
-            ocpncc1->GetSize( &ww, &wh );
-
-            ppm = wxMin(ww/(rw*1852), wh/(rh*1852)) * ( 100 - fabs( clat ) ) / 90;
-
-            ppm = wxMin(ppm, 1.0);
-
-            my_VP.lat_min = RBBox.GetMinLat();
-            my_VP.lon_min = RBBox.GetMinLon();
-            my_VP.lat_max = RBBox.GetMaxLat();
-            my_VP.lon_max = RBBox.GetMaxLon();
-            my_VP.clon = clon;
-            my_VP.clat = clat;
-            my_VP.view_scale_ppm = ppm;
             size_t n = l_pBoundary->GetnPoints();
             if (n != 0) {
                 double *t = new double[n *2];
@@ -2170,6 +2140,7 @@ void PathManagerDialog::OnChart2LayClick( wxCommandEvent &event )
         l_pBoundary->m_style = g_BoundaryLineStyle;
 
         LLBBox l_LLBBox;
+        PlugIn_ViewPort my_VP = g_VP;
         l_LLBBox.Set(my_VP.lat_min, my_VP.lon_min, my_VP.lat_max, my_VP.lon_max);
 
         BoundaryPoint *l_BP1 = new BoundaryPoint(l_LLBBox.GetMaxLat(), l_LLBBox.GetMaxLon(), g_sODPointIconName, wxS(""), wxT(""), false);
