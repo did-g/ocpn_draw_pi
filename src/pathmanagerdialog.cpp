@@ -2115,7 +2115,7 @@ void PathManagerDialog::OnChart2LayClick( wxCommandEvent &event )
                 // --------------
                 lst = GetHazards( n, t );
 
-                delete t;
+                delete [] t;
             }
             else
                 l_pBoundary = 0;
