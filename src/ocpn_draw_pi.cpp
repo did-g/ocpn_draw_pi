@@ -3486,6 +3486,7 @@ bool ocpn_draw_pi::CreateEBLLeftClick( wxMouseEvent &event )
     beginPoint->SetNameShown( false );
     beginPoint->SetTypeString( wxT("EBL Point"));
     beginPoint->m_bIsolatedMark = false;
+    beginPoint->m_bSingleUse = true;
     m_pMouseEBL->AddPoint( beginPoint, false );
     
     pMousePoint = new ODPoint( rlat, rlon, g_sEBLEndIconName, _("End"), wxT("") );
@@ -3493,6 +3494,7 @@ bool ocpn_draw_pi::CreateEBLLeftClick( wxMouseEvent &event )
     pMousePoint->SetNameShown( false );
     pMousePoint->SetTypeString( wxS("EBL Point") );
     pMousePoint->m_bIsolatedMark = FALSE;
+    pMousePoint->m_bSingleUse = true;
     m_pMouseEBL->AddPoint( pMousePoint );
     m_pMouseEBL->m_bCentreOnBoat = true;
     DistanceBearingMercator_Plugin(rlat, rlon, m_dStartLat, m_dStartLon, &m_pMouseEBL->m_dEBLAngle, &m_pMouseEBL->m_dLength);
