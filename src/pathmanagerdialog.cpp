@@ -1775,6 +1775,7 @@ void PathManagerDialog::OnODPointNewClick( wxCommandEvent &event )
         ODPoint *pODP = NULL;
         if(l_pType->m_iSelection == ID_ODNEWPOINTDIALOGBUTTON_BOUNDARY) {
             BoundaryPoint *pBP = new BoundaryPoint( g_dLat, g_dLon, g_sODPointIconName, wxEmptyString, wxT("") );
+            pBP->m_bIsolatedMark = true;                      // This is an isolated mark
             pODP = pBP;
         } else {
             TextPoint *pTP = new TextPoint( g_dLat, g_dLon, g_sODPointIconName, wxEmptyString, wxT("") );
