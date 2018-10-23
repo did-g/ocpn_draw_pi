@@ -42,6 +42,7 @@
 
 // Fix for VS2010 not having the round function
 #if defined (_WIN32)
+#if defined (_MSC_VER)
 #if _MSC_VER < 1700
 int round (double x) {
     int i = (int) x;
@@ -51,6 +52,7 @@ int round (double x) {
         return (-x+i >= 0.5) ? (i - 1) : (i);
     }
 }
+#endif
 #endif
 #endif
 
