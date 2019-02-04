@@ -131,7 +131,7 @@ enum { colOCPNPOINTICON = 0, colOCPNPOINTNAME, colOCPNPOINTDIST };
 
 int sort_path_on_vis;
 #if wxCHECK_VERSION(2, 9, 0)
-int wxCALLBACK SortPathOnVis(long item1, long item2, wxIntPtr list)
+int wxCALLBACK SortPathOnVis(wxIntPtr item1, wxIntPtr item2, wxIntPtr list)
 #else
 int wxCALLBACK SortPathOnVis(long item1, long item2, long list)
 #endif
@@ -166,7 +166,7 @@ int wxCALLBACK SortPathOnVis(long item1, long item2, long list)
 // sort callback. Sort by path name.
 int sort_path_name_dir;
 #if wxCHECK_VERSION(2, 9, 0)
-int wxCALLBACK SortPathOnName(long item1, long item2, wxIntPtr list)
+int wxCALLBACK SortPathOnName(wxIntPtr item1, wxIntPtr item2, wxIntPtr list)
 #else
 int wxCALLBACK SortPathOnName(long item1, long item2, long list)
 #endif
@@ -195,7 +195,7 @@ int wxCALLBACK SortPathOnName(long item1, long item2, long list)
 // sort callback. Sort by path Destination.
 int sort_path_to_dir;
 #if wxCHECK_VERSION(2, 9, 0)
-int wxCALLBACK SortPathOnTo(long item1, long item2, wxIntPtr list)
+int wxCALLBACK SortPathOnTo(wxIntPtr item1, wxIntPtr item2, wxIntPtr list)
 #else
 int wxCALLBACK SortPathOnTo(long item1, long item2, long list)
 #endif
@@ -225,7 +225,7 @@ int sort_ODPoint_key;
 // sort callback. Sort by path visibility.
 int sort_ODPoint_on_vis;
 #if wxCHECK_VERSION(2, 9, 0)
-int wxCALLBACK SortODPointsOnVis(long item1, long item2, wxIntPtr list)
+int wxCALLBACK SortODPointsOnVis(wxIntPtr item1, wxIntPtr item2, wxIntPtr list)
 #else
 int wxCALLBACK SortODPointsOnVis(long item1, long item2, long list)
 #endif
@@ -262,7 +262,7 @@ int wxCALLBACK SortODPointsOnVis(long item1, long item2, long list)
 // sort callback. Sort by point name.
 int sort_ODPoint_name_dir;
 #if wxCHECK_VERSION(2, 9, 0)
-int wxCALLBACK SortODPointsOnName(long item1, long item2, wxIntPtr list)
+int wxCALLBACK SortODPointsOnName(wxIntPtr item1, wxIntPtr item2, wxIntPtr list)
 #else
 int wxCALLBACK SortODPointsOnName(long item1, long item2, long list)
 #endif
@@ -285,7 +285,7 @@ int wxCALLBACK SortODPointsOnName(long item1, long item2, long list)
 // sort callback. Sort by point distance.
 int sort_ODPoint_len_dir;
 #if wxCHECK_VERSION(2, 9, 0)
-int wxCALLBACK SortODPointsOnDistance(long item1, long item2, wxIntPtr list)
+int wxCALLBACK SortODPointsOnDistance(wxIntPtr item1, wxIntPtr item2, wxIntPtr list)
 #else
 int wxCALLBACK SortODPointsOnDistance(long item1, long item2, long list)
 #endif
@@ -323,7 +323,7 @@ int wxCALLBACK SortODPointsOnDistance(long item1, long item2, long list)
 // sort callback. Sort by layer visibility.
 int sort_layer_on_vis;
 #if wxCHECK_VERSION(2, 9, 0)
-int wxCALLBACK SortLayerOnVis(long item1, long item2, wxIntPtr list)
+int wxCALLBACK SortLayerOnVis(wxIntPtr item1, wxIntPtr item2, wxIntPtr list)
 #else
 int wxCALLBACK SortLaerOnVis(long item1, long item2, long list)
 #endif
@@ -358,7 +358,7 @@ int wxCALLBACK SortLaerOnVis(long item1, long item2, long list)
 // sort callback. Sort by layer name.
 int sort_layer_name_dir;
 #if wxCHECK_VERSION(2, 9, 0)
-int wxCALLBACK SortLayersOnName(long item1, long item2, wxIntPtr list)
+int wxCALLBACK SortLayersOnName(wxIntPtr item1, wxIntPtr item2, wxIntPtr list)
 #else
 int wxCALLBACK SortLayersOnName(long item1, long item2, long list)
 #endif
@@ -387,7 +387,7 @@ int wxCALLBACK SortLayersOnName(long item1, long item2, long list)
 // sort callback. Sort by layer size.
 int sort_layer_len_dir;
 #if wxCHECK_VERSION(2, 9, 0)
-int wxCALLBACK SortLayersOnSize(long item1, long item2, wxIntPtr list)
+int wxCALLBACK SortLayersOnSize(wxIntPtr item1, wxIntPtr item2, wxIntPtr list)
 #else
 int wxCALLBACK SortLayersOnSize(long item1, long item2, long list)
 #endif
@@ -894,18 +894,23 @@ void PathAndPointManagerDialogImpl::OnPathDeSelected( wxListEvent &event )
 
 void PathAndPointManagerDialogImpl::OnPathColumnClicked( wxListEvent &event )
 {
+#if wxCHECK_VERSION(2,9,0)
+    wxIntPtr ctrl = (wxIntPtr) m_listCtrlPath;
+#else
+    long ctrl = (long) m_listCtrlPath;
+#endif
     switch (event.m_col) {
         case 0:
             sort_path_on_vis++;
-            m_listCtrlPath->SortItems( SortPathOnVis, (long) m_listCtrlPath );
+            m_listCtrlPath->SortItems( SortPathOnVis, ctrl );
             break;
         case 1:
             sort_path_name_dir++;
-            m_listCtrlPath->SortItems( SortPathOnName, (long) m_listCtrlPath );
+            m_listCtrlPath->SortItems( SortPathOnName, ctrl );
             break;
         case 2:
             sort_path_to_dir++;
-            m_listCtrlPath->SortItems( SortPathOnTo, (long) m_listCtrlPath );
+            m_listCtrlPath->SortItems( SortPathOnTo, ctrl );
             break;
     }
 }
@@ -975,9 +980,11 @@ void PathAndPointManagerDialogImpl::UpdatePathListCtrl()
         m_listCtrlPath->SetItem( idx, colPATHDESC, desc );
         //        m_listCtrlPath->SetItemData( idx, ( *it )->IsVisible() ? 0 : 1 );
     }
-    
+#if wxCHECK_VERSION(2,9,0)
+    m_listCtrlPath->SortItems( SortPathOnName, (wxIntPtr) m_listCtrlPath );
+#else
     m_listCtrlPath->SortItems( SortPathOnName, (long) m_listCtrlPath );
-    
+#endif
     // restore selection if possible
     // NOTE this will select a different item, if one is deleted
     // (the next path will get that index).
@@ -1079,7 +1086,7 @@ void PathAndPointManagerDialogImpl::ZoomtoPath( ODPath *path )
 
 void PathAndPointManagerDialogImpl::UpdatePointListCtrl( ODPoint *op_select, bool b_retain_sort )
 {
-    long selected_id = -1;
+    wxUIntPtr selected_id = -1;
     long item = -1;
     
     if( NULL == op_select ) {
@@ -1132,29 +1139,34 @@ void PathAndPointManagerDialogImpl::UpdatePointListCtrl( ODPoint *op_select, boo
             dist.Printf( _T("%5.2f ") + getUsrDistanceUnit_Plugin(), toUsrDistance_Plugin( dst ) );
             m_listCtrlODPoints->SetItem( idx, colOCPNPOINTDIST, dist );
             
-            if( op == op_select ) selected_id = (long) op_select; //index; 
+            if( op == op_select ) selected_id = (wxUIntPtr)op_select; //index; 
             
             index++;
         }
         
         node = node->GetNext();
     }
-    
+#if wxCHECK_VERSION(2,9,0)
+    wxIntPtr ctrl = (wxIntPtr) m_listCtrlODPoints;
+#else
+    long ctrl = (long) m_listCtrlODPoints;
+#endif
+
     if( !b_retain_sort ) {
-        m_listCtrlODPoints->SortItems( SortODPointsOnName, (long) m_listCtrlODPoints );
+        m_listCtrlODPoints->SortItems( SortODPointsOnName, ctrl );
         sort_ODPoint_key = SORT_ON_NAME;
     } else {
         switch( sort_ODPoint_key ){
             case SORT_ON_NAME:
-                m_listCtrlODPoints->SortItems( SortODPointsOnName, (long) m_listCtrlODPoints );
+                m_listCtrlODPoints->SortItems( SortODPointsOnName, ctrl );
                 break;
             case SORT_ON_DISTANCE:
-                m_listCtrlODPoints->SortItems( SortODPointsOnDistance, (long) m_listCtrlODPoints );
+                m_listCtrlODPoints->SortItems( SortODPointsOnDistance, ctrl );
                 break;
         }
     }
     
-    if( selected_id > -1 ) {
+    if( selected_id != (wxUIntPtr) -1 ) {
         item = m_listCtrlODPoints->FindItem( -1, selected_id );
         m_listCtrlODPoints->SetItemState( item, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
     }
@@ -1220,18 +1232,23 @@ void PathAndPointManagerDialogImpl::OnODPointDeSelected( wxListEvent &event )
 
 void PathAndPointManagerDialogImpl::OnODPointColumnClick( wxListEvent &event )
 {
+#if wxCHECK_VERSION(2,9,0)
+    wxIntPtr ctrl = (wxIntPtr) m_listCtrlODPoints;
+#else
+    long ctrl = (long) m_listCtrlODPoints;
+#endif
     switch (event.m_col) {
         case 0:
             sort_ODPoint_on_vis++;
-            m_listCtrlODPoints->SortItems( SortODPointsOnVis, (long) m_listCtrlODPoints );
+            m_listCtrlODPoints->SortItems( SortODPointsOnVis, ctrl );
             break;
         case 1:
             sort_ODPoint_name_dir++;
-            m_listCtrlODPoints->SortItems( SortODPointsOnName, (long) m_listCtrlODPoints );
+            m_listCtrlODPoints->SortItems( SortODPointsOnName, ctrl );
             break;
         case 2:
             sort_ODPoint_len_dir++;
-            m_listCtrlODPoints->SortItems( SortODPointsOnDistance, (long) m_listCtrlODPoints );
+            m_listCtrlODPoints->SortItems( SortODPointsOnDistance, ctrl );
             break;
     }
 }
@@ -1527,18 +1544,23 @@ void PathAndPointManagerDialogImpl::OnLayerSelected( wxListEvent &event )
 
 void PathAndPointManagerDialogImpl::OnLayerColumnClick( wxListEvent &event )
 {
+#if wxCHECK_VERSION(2,9,0)
+    wxIntPtr ctrl = (wxIntPtr) m_listCtrlLayers;
+#else
+    long ctrl = (long) m_listCtrlLayers;
+#endif
     switch (event.m_col) {
         case 0:
             sort_layer_on_vis++;
-            m_listCtrlLayers->SortItems( SortPathOnVis, (long) m_listCtrlLayers );
+            m_listCtrlLayers->SortItems( SortPathOnVis, ctrl );
             break;
         case 1:
             sort_layer_name_dir++;
-            m_listCtrlLayers->SortItems( SortPathOnName, (long) m_listCtrlLayers );
+            m_listCtrlLayers->SortItems( SortPathOnName, ctrl );
             break;
         case 2:
             sort_layer_len_dir++;
-            m_listCtrlLayers->SortItems( SortPathOnTo, (long) m_listCtrlLayers );
+            m_listCtrlLayers->SortItems( SortPathOnTo, ctrl );
             break;
     }
 }
@@ -1899,8 +1921,11 @@ void PathAndPointManagerDialogImpl::UpdateLayerListCtrl()
         len.Printf( wxT("%d"), (int) lay->m_NoOfItems );
         m_listCtrlLayers->SetItem( idx, colLAYITEMS, len );
     }
-    
+#if wxCHECK_VERSION(2,9,0)
+    m_listCtrlLayers->SortItems( SortLayersOnName, (wxIntPtr) m_listCtrlLayers );
+#else
     m_listCtrlLayers->SortItems( SortLayersOnName, (long) m_listCtrlLayers );
+#endif
     
     // restore selection if possible
     // NOTE this will select a different item, if one is deleted
@@ -1997,7 +2022,7 @@ wxString PathAndPointManagerDialogImpl::GetLayerName( int id )
 
 void PathAndPointManagerDialogImpl::UpdateODPointsListCtrl( ODPoint *op_select, bool b_retain_sort )
 {
-    long selected_id = -1;
+    wxUIntPtr selected_id = -1;
     long item = -1;
     
     if( NULL == op_select ) {
@@ -2050,7 +2075,7 @@ void PathAndPointManagerDialogImpl::UpdateODPointsListCtrl( ODPoint *op_select, 
             dist.Printf( _T("%5.2f ") + getUsrDistanceUnit_Plugin(), toUsrDistance_Plugin( dst ) );
             m_listCtrlODPoints->SetItem( idx, colOCPNPOINTDIST, dist );
             
-            if( op == op_select ) selected_id = (long) op_select; //index; 
+            if( op == op_select ) selected_id = (wxUIntPtr) op_select; //index; 
             
             index++;
         }
@@ -2058,16 +2083,22 @@ void PathAndPointManagerDialogImpl::UpdateODPointsListCtrl( ODPoint *op_select, 
         node = node->GetNext();
     }
     
+#if wxCHECK_VERSION(2,9,0)
+    wxIntPtr ctrl = (wxIntPtr) m_listCtrlODPoints;
+#else
+    long ctrl = (long) m_listCtrlODPoints;
+#endif
+
     if( !b_retain_sort ) {
-        m_listCtrlODPoints->SortItems( SortODPointsOnName, (long) m_listCtrlODPoints );
+        m_listCtrlODPoints->SortItems( SortODPointsOnName, ctrl );
         sort_ODPoint_key = SORT_ON_NAME;
     } else {
         switch( sort_ODPoint_key ){
             case SORT_ON_NAME:
-                m_listCtrlODPoints->SortItems( SortODPointsOnName, (long) m_listCtrlODPoints );
+                m_listCtrlODPoints->SortItems( SortODPointsOnName, ctrl );
                 break;
             case SORT_ON_DISTANCE:
-                m_listCtrlODPoints->SortItems( SortODPointsOnDistance, (long) m_listCtrlODPoints );
+                m_listCtrlODPoints->SortItems( SortODPointsOnDistance, ctrl );
                 break;
         }
     }
