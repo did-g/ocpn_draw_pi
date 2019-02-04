@@ -18,8 +18,8 @@ IF(NOT WIN32 AND NOT APPLE )
   #ADD_DEFINITIONS( " -g -fno-strict-aliasing -O2")
 ENDIF(NOT WIN32 AND NOT APPLE)
 
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/ocpnsrc/glu/include)
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/ocpninclude)
+INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/include)
+INCLUDE_DIRECTORIES(BEFORE ${CMAKE_SOURCE_DIR}/ocpninclude)
 
 IF(WIN32)
     IF(MSVC)
@@ -55,5 +55,5 @@ SET(GLU_SOURCES
     libtess/render.c
     )
 
-add_library(GLU_static STATIC ${GLU_SOURCES})
-set_target_properties(GLU_static PROPERTIES OUTPUT_NAME GLU)
+add_library(GLU_static_OD STATIC ${GLU_SOURCES})
+set_target_properties(GLU_static_OD PROPERTIES OUTPUT_NAME GLU)
