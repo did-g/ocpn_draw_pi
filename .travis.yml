@@ -45,7 +45,9 @@ script:
         cmake -DwxWidgets_CONFIG_EXECUTABLE=/tmp/wx312_opencpn50_macos109/bin/wx-config -DwxWidgets_CONFIG_OPTIONS="--prefix=/tmp/wx312_opencpn50_macos109" -DCMAKE_INSTALL_PREFIX=/tmp/opencpn -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 ..;
         make -sj2;
         make create-pkg;
+        pwd;
         ls -l;
+        ( echo OAUTH_ACCESS_TOKEN=${OAUTH_ACCESS_TOKEN} > ~/.dropbox_uploader );
      fi
 
 notifications:
@@ -56,10 +58,7 @@ git:
 
 before_install:
       - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
-      - '[ "$TRAVIS_SECURE_ENV_VARS" == "false" ] || openssl aes-256-cbc -K $encrypted_d0e843cd38d7_key -iv $encrypted_d0e843cd38d7_iv -in .dropbox_uploader.enc -out ~/.dropbox_uploader -d'
 
-after_failure:
-      - '[ -f ~/.dropbox_uploader ] && ./dropbox_uploader.sh upload t/results/ travis-artifacts/$TRAVIS_JOB_NUMBER/'
 
 addons:
   apt:
@@ -74,14 +73,31 @@ addons:
 deploy:
 - provider: script
   file: $TRAVIS_BUILD_DIR/build/*.{deb,rpm,dmg,pkg,txz,pkg.tar.xz}
-  script: if [ -f ~/.dropbox_uploader ]; then bash ./dropbox_uploader.sh upload $TRAVIS_BUILD_DIR/build/*.pkg ./; bash ./dropbox_uploader.sh upload $TRAVIS_BUILD_DIR/build/*.rpm ./; bash ./dropbox_uploader.sh upload $TRAVIS_BUILD_DIR/build/*.deb ./;fi
+  script: if [ -f ~/.dropbox_uploader ];
+      then
+        if [[ "$TRAVIS_OS_NAME" == "osx" ]];
+        then
+            pwd; 
+            bash ../dropbox_uploader.sh -d upload $TRAVIS_BUILD_DIR/build/*.pkg / ;
+            cat /tmp/du* ;
+        fi;
+        if [[ "$TRAVIS_OS_NAME" == "linux" ]];
+        then
+            bash ./dropbox_uploader.sh upload $TRAVIS_BUILD_DIR/build/*.rpm ./;
+            bash ./dropbox_uploader.sh upload $TRAVIS_BUILD_DIR/build/*.deb ./;
+        fi;
+      fi
 
   skip_cleanup: true
   on: # Set deploy conditions
       # Deploy only when tag is not specified
       tags: false
       # or this branch
-      branch: master_1.5
+      branch: t_1_5
       # and only when API token is set
       # condition: "${#GitHub_auth_token} != 0 && $BUILD_TYPE = Release"
       #condition: "${#GitHub_auth_token} != 0" 
+
+env:
+  global:
+    #secure: v8tInUAkF4NbllYCjcotvQhMakRuzOWAi6y2u7btzCXnZr6mrTpBqiZlXZ4a8BEh+plFZ39aKBgaYwmPLPmqMf/BJ98ebXkzNpQT8tFEodxW9BLkorJ9dHrM3/UFnZ/xzC6O0gHap7G9L9OghtNtSlCWkd2NJ92/TVEVxmf9fNnMWaluetL+t4SyukLOX7iR4jszk1KLTO9DXlwpRsrQsbp8w2f0IBiOxaROuI3S+aZPig01/R9eQDYQTBUFFDuYVaNwpu+VIp3HJOSh27f3/WEgCwwK+Q8++geEvyjtTHDyD+kNSk0VzYlL5hsSVCkqg5J/w1YziBCCyOmxQ7+sRqTZEPpmOJkmvcPpUMQaZ/JOQYlBDKJtq57vHIzXPaZSgH/LgkPq5UzxuAJilbMlu1Nio97RB7HNQ3jwOesDKDccdQzxQyyXJletsc4v1w9eKnZOQAqu4NXvhxCTN3YvXukMyFl5SuJi6ah//Ohw3aLtDeAcpatN0SwkJHvDiSsmBkcwa0AmUKgnTloD3qdbSHMi6vh3R10FZVFKPlpDfWimBiJHMTSHp7R0ZjO/1P08kQ6QuF+KFWG5mcUkM+2fbaYM084jFHmfHhWUE9BcLYrgYEasA5aT0Z7hAYpm58y5PK+eH+Y9ltUZezQRiY96UYhndW8dHm23inQ0/TuimHI=
